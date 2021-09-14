@@ -1,0 +1,86 @@
+swagger: '2.0'
+info:
+  description: Current Account Creation
+  version: v1.0.0
+  title: Account Management
+host: 'localhost:8163'
+basePath: /api/v1.0.0/
+tags: []
+schemes:
+  - http
+  - https
+paths:
+  /account/create:
+    post:
+      tags: []
+      operationId: createCurrentAccount
+      produces:
+        - application/json
+      parameters:
+        - name: customerId
+          in: query
+          description: 'CustomerId for whom, this account will be created'
+          required: true
+          type: integer
+        - name: initialCredit
+          in: query
+          description: 'Initial Credit Amount'
+          required: false
+          type: number
+      responses:
+        '200':
+          description: CreateAccountResponse
+          schema:
+            $ref: '#/definitions/CreateAccountResponse'
+  /account/fetch:
+    get:
+      tags: [ ]
+      operationId: fetchAccountById
+      produces:
+        - application/json
+      parameters:
+        - name: accountId
+          in: query
+          description: 'accountId for which, this api will return response'
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: CustomerResponse
+definitions:
+  CreateAccountResponse:
+    type: object
+    properties:
+      message:
+        type: string
+  CustomerResponse:
+    type: object
+    properties:
+      firstName:
+        type: string
+      middleName:
+        type: string
+      surname:
+        type: string
+      accountId:
+        type: integer
+      currency:
+        type: string
+      balance:
+        type: number
+      accountResponse:
+        type: object
+        $ref: '#/definitions/CustomerTransactionResponse'
+  CustomerTransactionResponse:
+    type: array
+    items:
+      properties:
+        transactionId:
+          type: integer
+        amount:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        type:
+          type: string

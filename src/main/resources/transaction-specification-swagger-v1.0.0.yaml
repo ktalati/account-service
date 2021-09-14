@@ -1,0 +1,81 @@
+swagger: '2.0'
+info:
+  description: Transaction Management
+  version: v1.0.0
+  title: Transaction Management
+host: 'localhost:8163'
+basePath: /api/v1.0.0/
+tags: []
+schemes:
+  - http
+  - https
+paths:
+  /transaction/create:
+    post:
+      tags: []
+      operationId: createTransaction
+      produces:
+        - application/json
+      parameters:
+        - name: accountId
+          in: query
+          description: 'accountId for which, this transaction will be created'
+          required: true
+          type: integer
+        - name: amount
+          in: query
+          description: 'Transaction Amount'
+          required: true
+          type: number
+      responses:
+        '200':
+          description: CreateTransactionResponse
+          schema:
+            $ref: '#/definitions/CreateTransactionResponse'
+  /account/fetchTransactionByAccount:
+    get:
+      tags: []
+      operationId: fetchTransactionByAccountId
+      produces:
+        - application/json
+      parameters:
+        - name: accountId
+          in: query
+          description: 'accountId for which, this api will return response'
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: TransactionResponse
+          schema:
+            $ref: '#/definitions/TransactionResponse'
+definitions:
+  CreateTransactionResponse:
+    type: object
+    properties:
+      message:
+        type: string
+  TransactionResponse:
+    type: object
+    properties:
+      accountId:
+        type: integer
+      balance:
+        type: number
+        default: 0
+      transactions:
+        type: array
+        $ref: '#/definitions/TransactionDetail'
+  TransactionDetail:
+    type: array
+    items:
+      properties:
+        transactionId:
+          type: integer
+        amount:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        type:
+          type: string
